@@ -1,0 +1,41 @@
+<form class="flex flex-col gap-2" [formGroup]="registerForm" (ngSubmit)="onSubmit()">
+  <label class="input input-bordered flex items-center gap-2">
+    <input type="email" placeholder="Correo electrónico" class="grow" formControlName="email" />
+  </label>
+  <label class="input input-bordered flex items-center gap-2">
+    <input type="text" placeholder="Nombre" class="grow" formControlName="fullName" />
+  </label>
+  <label class="input input-bordered flex items-center gap-2">
+    <input type="text" placeholder="Nombre de usuario" class="grow" formControlName="username" />
+  </label>
+  <label class="input input-bordered flex items-center gap-2">
+    <input type="number" placeholder="Documento" class="grow" formControlName="document" (keydown)="noNegative($event)"/>
+  </label>
+  <label class="input input-bordered flex items-center gap-2">
+    <input type="password" placeholder="Contraseña" class="grow" formControlName="password" />
+  </label>
+  <label class="input input-bordered flex items-center gap-2"> 
+    <input type="password" placeholder="Confirmar contraseña" class="grow" formControlName="password2" />
+  </label>
+  
+  <button type="submit" class="btn btn-secondary">Registrar</button>
+
+</form>
+@if (hasError()) {
+  <div role="alert" class="alert alert-error animate-fadeIn fixed bottom-5 right-5 w-52">
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      class="h-6 w-6 shrink-0 stroke-current"
+      fill="none"
+      viewBox="0 0 24 24"
+    >
+      <path
+        stroke-linecap="round"
+        stroke-linejoin="round"
+        stroke-width="2"
+        d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z"
+      />
+    </svg>
+    <span>Por favor revise la información ingresada</span>
+  </div>
+}
