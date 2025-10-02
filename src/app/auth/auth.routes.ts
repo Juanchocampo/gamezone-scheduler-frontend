@@ -1,5 +1,6 @@
 import { Routes } from '@angular/router';
 import { AuthLayoutComponent } from './layout/auth-layout/auth-layout.component';
+import { authGuard } from './guards/auth.guard';
 
 export const routes: Routes = [
   {
@@ -8,7 +9,10 @@ export const routes: Routes = [
     children: [
       {
         path: 'login',
-        loadComponent: () => import('./pages/login-page/login-page.component')
+        loadComponent: () => import('./pages/login-page/login-page.component'),
+        canMatch: [
+          authGuard
+        ]
       },
       {
         path: 'register',
@@ -19,6 +23,10 @@ export const routes: Routes = [
         redirectTo: 'login'
       }
     ]
+  },
+  {
+    path: '**',
+    redirectTo: ''
   }
 ]
 

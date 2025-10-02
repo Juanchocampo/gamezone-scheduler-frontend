@@ -6,8 +6,14 @@ import { AuthService } from '../../services/auth.service';
 @Component({
   selector: 'app-login-page',
   imports: [RouterModule, ReactiveFormsModule],
+  styles: [
+    `
+    input::placeholder{
+      opacity: .5
+    }
+    `
+  ],
   templateUrl: './login-page.component.html',
-  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export default class LoginPageComponent {
   private fb = inject(FormBuilder);

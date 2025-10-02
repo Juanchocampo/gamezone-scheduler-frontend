@@ -23,10 +23,13 @@ import { AuthService } from '../../services/auth.service';
       input[type='number'] {
         -moz-appearance: textfield;
       }
+
+      input::placeholder{
+        opacity: .5;
+      }
     `,
   ],
   templateUrl: './register-page.component.html',
-  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export default class RegisterPageComponent {
   private fb = inject(FormBuilder);
