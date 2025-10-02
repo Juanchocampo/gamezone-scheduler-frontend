@@ -15,3 +15,12 @@ export interface User {
 export interface Role {
   name: string;
 }
+
+export interface UserMapped {
+  email:    string;
+  name:     string;
+  username: string;
+  document: string;
+  id:       string;
+  roles:    string[];
+}
