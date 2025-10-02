@@ -1,0 +1,78 @@
+<div class="navbar bg-base-100 shadow-sm">
+  <div class="navbar-start">
+    <div class="dropdown">
+      <div  tabindex="0" role="button" class="btn btn-ghost lg:hidden">
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          class="h-5 w-5"
+          fill="none"
+          viewBox="0 0 24 24"
+          stroke="currentColor"
+        >
+          <path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="2"
+            d="M4 6h16M4 12h8m-8 6h16"
+          />
+        </svg>
+      </div>
+      <ul
+        tabindex="0"
+        class="menu menu-sm dropdown-content bg-base-100 rounded-box z-1 mt-3 w-52 p-2 shadow"
+      >
+        <li><a routerLink="/home" routerLinkActive="border-b-2 rounded-b-none">Home</a></li>
+        <li>
+          <a>Reserva</a>
+          <ul class="p-2">
+            <li><a>Barranquilla</a></li>
+            <li><a>Soledad</a></li>
+          </ul>
+        </li>
+        @if (authService.user()?.roles?.includes('monitor')) {
+        <li><a>Monitor</a></li>
+        }
+      </ul>
+    </div>
+    <a routerLink="/home" class="btn btn-ghost text-xl">Reserva<span class="text-primary">App</span></a>
+  </div>
+  <div class="navbar-center hidden lg:flex">
+    <ul class="menu menu-horizontal px-1">
+      <li><a routerLink="/home" routerLinkActive="border-b-2 rounded-b-none">Home</a></li>
+      <li>
+        <details>
+          <summary>Reserva</summary>
+          <ul class="p-2">
+            <li><a [routerLink]="['reservas', 'barranquilla']" routerLinkActive="border-b-2 rounded-b-none">Barranquilla</a></li>
+            <li><a [routerLink]="['reservas', 'soledad']" routerLinkActive="border-b-2 rounded-b-none">Soledad</a></li>
+          </ul>
+        </details>
+      </li>
+      @if (authService.user()?.roles?.includes('monitor')) {
+      <li><a>Monitor</a></li>
+      }
+    </ul>
+  </div>
+  <div class="navbar-end pe-2.5">
+    <div class="dropdown dropdown-end">
+      <div tabindex="0" class="btn btn-ghost btn-circle avatar indicator">
+        <div class="w-10 rounded-full">
+          <img src="/images/defaultProfile.png" />
+        </div>
+        @if (authService.isAdmin()) {
+        <span class="indicator-item badge badge-secondary">★</span>
+        }
+      </div>
+      <ul
+        tabindex="0"
+        class="menu menu-sm dropdown-content bg-base-100 rounded-box mt-3 w-52 p-2 shadow"
+      >
+        <li><a>Perfil</a></li>
+        @if (authService.isAdmin()) {
+        <li><a>Dashboard</a></li>
+        }
+        <li><a (click)="logout()">Cerrar sesión</a></li>
+      </ul>
+    </div>
+  </div>
+</div>
