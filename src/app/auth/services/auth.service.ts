@@ -4,6 +4,7 @@ import { HttpClient } from '@angular/common/http';
 import { catchError, map, Observable, of, tap, throwError } from 'rxjs';
 import { AuthResponse, UserMapped } from '../interfaces/auth.interface';
 import { UserRoleMap } from '../mapper/Users.mapper';
+import { rxResource } from '@angular/core/rxjs-interop';
 
 const baseUrl = environment.API_URL;
 type AuthStatus = 'checking' | 'authenticated' | 'not-authenticated';
@@ -25,7 +26,14 @@ export class AuthService {
 
   user = computed(() => this._user());
   token = computed(() => this._token());
-  isAdmin = computed(() => this._user()?.roles.includes('admin') ?? false)
+  isAdmin = computed<boolean>(() => this._user()?.roles.includes('admin') ?? false)
+  isMonitor = computed<boolean>(() => this._user()?.roles.includes('monitor')! ?? false)
+
+  statusResource = rxResource({
+    stream: () => {
+      return this.checkStatus()
+    }
+  })
 
   authStatus = computed(() => {
     if (this._authStatus() === 'checking') return 'checking';

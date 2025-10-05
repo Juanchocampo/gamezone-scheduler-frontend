@@ -1,6 +1,6 @@
 @import "tailwindcss";
 @plugin "daisyui" {
-  themes: light --default, dark --prefersdark, corporate;
+  themes: light --default, dark --prefersdark, corporate, cupcake, garden, sunset, luxury;
 }
 @theme {
   --font-monserrat: "montserrat", sans-serif;

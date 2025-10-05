@@ -25,17 +25,22 @@ export const authInterceptor: HttpInterceptorFn = (req, next) => {
     withCredentials: true
   });
 
-  return next(authReq).pipe(
-    catchError((err) => {
-      return authService.refresh().pipe(
-        switchMap((res) => {
-          const newReq = authReq.clone({
-            headers: authReq.headers.set('Authorization', `Bearer ${res.access_token}`),
-          });
-          return next(newReq);
-        }),
-        catchError((err) => authService.handleAuthError(err))
-      );
-    })
-  );
+  if(
+    req.url.includes('/auth')
+  ){
+    return next(authReq).pipe(
+      catchError((err) => {
+        return authService.refresh().pipe(
+          switchMap((res) => {
+            const newReq = authReq.clone({
+              headers: authReq.headers.set('Authorization', `Bearer ${res.access_token}`),
+            });
+            return next(newReq);
+          }),
+          catchError((err) => authService.handleAuthError(err))
+        );
+      })
+    );
+  }
+  return next(authReq)
 };

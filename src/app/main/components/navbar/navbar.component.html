@@ -1,7 +1,7 @@
-<div class="navbar bg-base-100 shadow-sm">
+<div class="navbar bg-base-100 shadow-sm font-monserrat">
   <div class="navbar-start">
     <div class="dropdown">
-      <div  tabindex="0" role="button" class="btn btn-ghost lg:hidden">
+      <div tabindex="0" role="button" class="btn btn-ghost lg:hidden">
         <svg
           xmlns="http://www.w3.org/2000/svg"
           class="h-5 w-5"
@@ -22,37 +22,70 @@
         class="menu menu-sm dropdown-content bg-base-100 rounded-box z-1 mt-3 w-52 p-2 shadow"
       >
         <li><a routerLink="/home" routerLinkActive="border-b-2 rounded-b-none">Home</a></li>
+        @if (authService.user()) {
         <li>
-          <a>Reserva</a>
+          <a routerLink="reservas">Reserva</a>
           <ul class="p-2">
-            <li><a>Barranquilla</a></li>
-            <li><a>Soledad</a></li>
+            <li>
+              <a
+                [routerLink]="['reservas', 'barranquilla']"
+                routerLinkActive="border-b-2 rounded-b-none"
+                >Barranquilla</a
+              >
+            </li>
+            <li>
+              <a [routerLink]="['reservas', 'soledad']" routerLinkActive="border-b-2 rounded-b-none"
+                >Soledad</a
+              >
+            </li>
           </ul>
         </li>
-        @if (authService.user()?.roles?.includes('monitor')) {
-        <li><a>Monitor</a></li>
+        } @if (authService.isMonitor()) {
+        <li><a routerLink="monitor" routerLinkActive="border-b-2 rounded-b-none">Monitor</a></li>
         }
       </ul>
     </div>
-    <a routerLink="/home" class="btn btn-ghost text-xl">Reserva<span class="text-primary">App</span></a>
+    <a routerLink="/home" class="btn btn-ghost text-xl"
+      >Reserva<span class="text-primary">App</span></a
+    >
   </div>
   <div class="navbar-center hidden lg:flex">
     <ul class="menu menu-horizontal px-1">
       <li><a routerLink="/home" routerLinkActive="border-b-2 rounded-b-none">Home</a></li>
+      @if (authService.user()) {
       <li>
-        <details>
-          <summary>Reserva</summary>
+        <details #details>
+          <summary routerLinkActive="border-b-2 rounded-b-none">
+            Reserva
+            <!-- RouterLink invisible solo para activar routerLinkActive -->
+            <a routerLink="/reservas" style="display: none"></a>
+          </summary>
           <ul class="p-2">
-            <li><a [routerLink]="['reservas', 'barranquilla']" routerLinkActive="border-b-2 rounded-b-none">Barranquilla</a></li>
-            <li><a [routerLink]="['reservas', 'soledad']" routerLinkActive="border-b-2 rounded-b-none">Soledad</a></li>
+            <li>
+              <a
+                [routerLink]="['reservas', 'barranquilla']"
+                routerLinkActive="border-b-2 rounded-b-none"
+                (click)="closeDetails()"
+                >Barranquilla</a
+              >
+            </li>
+            <li>
+              <a
+                [routerLink]="['reservas', 'soledad']"
+                routerLinkActive="border-b-2 rounded-b-none"
+                (click)="closeDetails()"
+                >Soledad</a
+              >
+            </li>
           </ul>
         </details>
       </li>
-      @if (authService.user()?.roles?.includes('monitor')) {
-      <li><a>Monitor</a></li>
+      } @if (authService.isMonitor()) {
+      <li><a routerLink="monitor" routerLinkActive="border-b-2 rounded-b-none">Monitor</a></li>
       }
     </ul>
   </div>
+  @if (authService.user()) {
   <div class="navbar-end pe-2.5">
     <div class="dropdown dropdown-end">
       <div tabindex="0" class="btn btn-ghost btn-circle avatar indicator">
@@ -75,4 +108,9 @@
       </ul>
     </div>
   </div>
+  }@else {
+  <div class="navbar-end">
+    <a class="btn btn-primary" routerLink="/auth">Iniciar Sesión</a>
+  </div>
+  }
 </div>

@@ -1,0 +1,81 @@
+<div class="bg-primary-content font-monserrat">
+  <div class="flex justify-between items-center m-4">
+    <div class="flex filter">
+        <input class="btn filter-reset" type="radio" name="metaframeworks" aria-label="All" />
+        <input class="btn" type="radio" name="metaframeworks" aria-label="Pendientes" />
+        <input class="btn" type="radio" name="metaframeworks" aria-label="En uso" />
+    </div>
+    <div class="flex gap-2">
+      <button class="btn btn-primary btn-sm ">Escanear QR</button>
+    </div>
+  </div>
+  <div class="flex justify-between  items-center m-4">
+    <div>
+      <label class="input">
+        <svg class="h-[1em] opacity-50" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+          <g
+            stroke-linejoin="round"
+            stroke-linecap="round"
+            stroke-width="2.5"
+            fill="none"
+            stroke="currentColor"
+          >
+            <circle cx="11" cy="11" r="8"></circle>
+            <path d="m21 21-4.3-4.3"></path>
+          </g>
+        </svg>
+        <input type="search" placeholder="Documento" />
+      </label>
+    </div>
+  </div>
+  <div class="overflow-auto">
+    <table class="table">
+      <!-- head -->
+      <thead>
+        <tr>
+          <th>Nombre</th>
+          <th>Sede</th>
+          <th>Consola</th>
+          <th>Fecha</th>
+          <th>Hora</th>
+          <th>estado</th>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody>
+        @for (reservation of reservationsResource.value(); track reservation.id) {
+        <tr>
+          <td>
+            <div class="flex items-center gap-3">
+              <div class="avatar"></div>
+              <div>
+                <div class="font-bold">{{ reservation.user.name | titlecase }}</div>
+              </div>
+            </div>
+          </td>
+          <td>
+            {{ reservation.console.console_name | titlecase }}
+          </td>
+          <td>
+            {{reservation.console.campus.campus_name | titlecase}}
+          </td>
+          <td>{{ reservation.starts_at | date : 'yyyy-MM-dd' }}</td>
+          <td>{{ reservation.starts_at | date : 'h:mm a' }}</td>
+          @if (reservation.status_id == 1) {
+          <td><span class="badge badge-soft badge-success">Pendiente</span></td>
+          }@else if (reservation.status_id == 3) {
+          <td><span class="badge badge-soft badge-info">en uso</span></td>
+          }
+          <th>
+            <button class="btn btn-ghost btn-xs">details</button>
+          </th>
+        </tr>
+        }@empty {
+        <td colspan="7" class="font-bold text-center text-xl">
+          No reservas activas.
+        </td>
+        }
+      </tbody>
+    </table>
+  </div>
+</div>
