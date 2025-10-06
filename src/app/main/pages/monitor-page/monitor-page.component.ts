@@ -1,7 +1,7 @@
 import { Component, effect, inject, signal } from '@angular/core';
 import { rxResource, toObservable, toSignal } from '@angular/core/rxjs-interop';
 import { ReservationService } from '../../services/reservation.service';
-import { catchError, debounceTime, distinctUntilChanged, filter, tap } from 'rxjs';
+import { debounceTime, distinctUntilChanged, filter, tap } from 'rxjs';
 import { ReservationListComponent } from '../../components/reservation-list/reservation-list.component';
 import { Reservations } from '../../interfaces/reservation.interface';
 

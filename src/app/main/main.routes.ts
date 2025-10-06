@@ -23,6 +23,11 @@ export const mainRoutes: Routes = [
         title: 'Reservas'
       },
       {
+        path: 'reserva/me',
+        loadComponent: () => import('./pages/mi-reserva/mi-reserva.component'),
+        title: 'Mi reserva'
+      },
+      {
         path: 'reservas/d/:id',
         loadComponent: () => import('./pages/reservation-details/reservation-details.component'),
         title: 'Detalles de Reserva'

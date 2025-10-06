@@ -54,7 +54,7 @@
       <li><a routerLink="/home" routerLinkActive="border-b-2 rounded-b-none">Home</a></li>
       @if (authService.user()) {
       <li>
-        <details #details>
+        <details class="relative z-50" #details>
           <summary routerLinkActive="border-b-2 rounded-b-none">
             Reserva
             <!-- RouterLink invisible solo para activar routerLinkActive -->
@@ -101,6 +101,7 @@
         class="menu menu-sm dropdown-content bg-base-100 rounded-box mt-3 w-52 p-2 shadow"
       >
         <li><a>Perfil</a></li>
+        <li><a routerLink="/reserva/me">Mi Reserva</a></li>
         @if (authService.isAdmin()) {
         <li><a>Dashboard</a></li>
         }

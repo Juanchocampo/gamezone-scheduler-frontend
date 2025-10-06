@@ -136,7 +136,7 @@ export default class ReservationPageComponent {
                 if (err.status === 409) {
                   Swal.fire({
                     title: 'Conflicto',
-                    text: 'Ya el usuario tiene una reserva activa',
+                    text: 'Ya tienes una reserva activa',
                     icon: 'warning',
                     confirmButtonText: 'Aceptar',
                   });

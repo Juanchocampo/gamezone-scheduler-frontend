@@ -1,21 +1,17 @@
-
 <div class="max-w-xl mx-auto mt-8 font-monserrat">
-  <div class="flex items-center gap-2">
-    <button class="btn btn-ghost btn-sm" (click)="goBack()">
-      <svg
-        xmlns="http://www.w3.org/2000/svg"
-        fill="none"
-        viewBox="0 0 24 24"
-        stroke-width="1.5"
-        stroke="currentColor"
-        class="w-4 h-4"
-      >
-        <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 19.5L8.25 12l7.5-7.5" />
-      </svg>
-      Volver
-    </button>
-  </div>
   <div class="card bg-base-100 shadow-xl px-1">
+    @if (reservationResource.isLoading()) {
+    <div class="flex w-full flex-col gap-4">
+      <div class="flex items-center gap-4">
+        <div class="skeleton h-16 w-16 shrink-0 rounded-full"></div>
+        <div class="flex flex-col gap-4">
+          <div class="skeleton h-4 w-20"></div>
+          <div class="skeleton h-4 w-28"></div>
+        </div>
+      </div>
+      <div class="skeleton h-32 w-full"></div>
+    </div>
+    }@else if(reservationResource.value()){
     <div class="card-body flex flex-col gap-7">
       <div class="flex items-center gap-3">
         <div class="w-11 rounded-full">
@@ -23,8 +19,8 @@
         </div>
 
         <div class="flex flex-col align-middle justify-center">
-          <span class="text-md font-bold">{{reservationResource.value()?.user?.name | titlecase}}</span>
-          <span class="opacity-70">{{reservationResource.value()?.user?.email}}</span>
+          <span class="text-md font-bold">{{ reservationResource.value()?.user?.name }}</span>
+          <span class="opacity-70">{{ reservationResource.value()?.user?.email }}</span>
         </div>
       </div>
       <div class="flex flex-col gap-3">
@@ -94,7 +90,7 @@
               </svg>
               <h3 class="opacity-80">Sede</h3>
             </div>
-            <span>{{reservationResource.value()?.console?.campus?.campus_name | titlecase}}</span>
+            <span>{{ reservationResource.value()?.console?.campus?.campus_name | titlecase }}</span>
           </div>
           <div class="flex flex-1 justify-start items-start flex-col gap-2">
             <div class="flex justify-center items-center gap-1">
@@ -174,7 +170,7 @@
               </svg>
               <h3 class="opacity-80">Consola</h3>
             </div>
-            <span>{{reservationResource.value()?.console?.console_name | titlecase}}</span>
+            <span>{{ reservationResource.value()?.console?.console_name | titlecase }}</span>
           </div>
           <div class="flex flex-1 justify-start items-start flex-col gap-2">
             <div class="flex justify-center items-center gap-1">
@@ -219,7 +215,7 @@
               </svg>
               <h3 class="opacity-80">Fecha</h3>
             </div>
-            <span>{{reservationResource.value()?.starts_at | date:'yy/MM/dd, HH:mm' }}</span>
+            <span>{{ reservationResource.value()?.starts_at | date:'yy/MM/dd, HH:mm' }}</span>
           </div>
         </div>
         <div class="card-actions justify-end">
@@ -229,16 +225,41 @@
           <div class="badge badge-outline badge-primary">En Uso</div>
           }
         </div>
-        @if(reservationResource.value()?.status_id == 1){
-          <div class="card-actions-justify-start">
-            <button class="btn btn-primary" (click)="markAsAttended()">Confirmar entrada</button>
-          </div>
-        }@else {
-          <div class="card-actions-justify-start">
-            <button class="btn btn-primary" (click)="MarkAsAttendedOut()">Confirmar salida</button>
-          </div>
-        }
+      </div>
+      <div class="flex flex-col justify-center items-center text-center text-xl font-bold">
+        <h3>Codigo QR</h3>
+        <qrcode [qrdata]="reservationResource.value()?.qr_sig!" [width]="150"></qrcode>
       </div>
     </div>
+    }@else {
+      <div class="flex flex-col justify-center items-center gap-4 py-8">
+        <svg
+          width="40px"
+          height="40px"
+          stroke-width="1.5"
+          viewBox="0 0 24 24"
+          fill="none"
+          xmlns="http://www.w3.org/2000/svg"
+          color="#000000"
+        >
+          <path
+            d="M12 6L12 12L18 12"
+            stroke="#000000"
+            stroke-width="1.5"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          ></path>
+          <path
+            d="M12 22C17.5228 22 22 17.5228 22 12C22 6.47715 17.5228 2 12 2C6.47715 2 2 6.47715 2 12C2 17.5228 6.47715 22 12 22Z"
+            stroke="#000000"
+            stroke-width="1.5"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          ></path>
+        </svg>
+        <span class="text-lg font-medium text-gray-600">No hay reservas activas</span>
+        <p class="text-gray-400 text-sm">Cuando hagas una reserva, aparecerá aquí.</p>
+      </div>
+    }
   </div>
 </div>

@@ -2,49 +2,89 @@ import { HttpClient } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
 import { environment } from '../../../environments/environment.development';
 import { Console } from '../interfaces/console.interface';
-import { catchError, debounceTime, map, Observable, of, tap, throwError, } from 'rxjs';
+import { catchError, debounceTime, map, Observable, of, tap, throwError } from 'rxjs';
 import { ConsoleMapper } from '../mappers/consoles.mapper';
 import { EventInput } from '@fullcalendar/core/index.js';
 import { Reservations } from '../interfaces/reservation.interface';
 
-const baseUrl = environment.API_URL
+const baseUrl = environment.API_URL;
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class ReservationService {
-  private http = inject(HttpClient)
+  private http = inject(HttpClient);
 
-  getConsolesByCampusName(campus: string): Observable<string[]>{
-    return this.http.get<Console[]>(`${baseUrl}/reservations/campus/${campus}`).pipe(
-      map(res => ConsoleMapper.ArrayConsoleToNameArray(res)),
-    )
+  getConsolesByCampusName(campus: string): Observable<string[]> {
+    return this.http
+      .get<Console[]>(`${baseUrl}/reservations/campus/${campus}`)
+      .pipe(map((res) => ConsoleMapper.ArrayConsoleToNameArray(res)));
   }
 
-  getActiveEvents(consoleName: string, campusName: string): Observable<EventInput[]>{
-    return this.http.get<EventInput[]>(`${baseUrl}/reservations/events/${consoleName}/${campusName}`)
+  getActiveEvents(consoleName: string, campusName: string): Observable<EventInput[]> {
+    return this.http.get<EventInput[]>(
+      `${baseUrl}/reservations/events/${consoleName}/${campusName}`
+    );
   }
 
-  getActiveReservations(status: string, document: string, offset: number): Observable<Reservations[]>{
-    return this.http.get<Reservations[]>(`${baseUrl}/reservations/actives`, {
-      params: {
-        status_name: status,
-        document: document,
-        offset: offset,
-        limit: 5
-      }
-    }).pipe(
-        catchError(err => {
-          return of([])
+  getMyReservation(): Observable<Reservations | null> {
+    return this.http.get<Reservations>(`${baseUrl}/reservations/me`).pipe(
+      catchError((err) => {
+        return of(null);
+      })
+    );
+  }
+
+  getActiveReservations(
+    status: string,
+    document: string,
+    offset: number
+  ): Observable<Reservations[]> {
+    return this.http
+      .get<Reservations[]>(`${baseUrl}/reservations/actives`, {
+        params: {
+          status_name: status,
+          document: document,
+          offset: offset,
+          limit: 5,
+        },
+      })
+      .pipe(
+        catchError((err) => {
+          return of([]);
         })
-      )
+      );
   }
 
-  createReservations(consoleName: string, campusName: string, startsAt: string){
-    return this.http.post(`${baseUrl}/reservations`, {
+  getActiveReservationsById(id: string): Observable<Reservations> {
+    return this.http.get<Reservations>(`${baseUrl}/reservations/${id}`);
+  }
+
+  createReservations(
+    consoleName: string,
+    campusName: string,
+    startsAt: string
+  ): Observable<Reservations> {
+    return this.http.post<Reservations>(`${baseUrl}/reservations`, {
       console_name: consoleName,
       campus_name: campusName,
-      starts_at: startsAt
-    })
+      starts_at: startsAt,
+    });
+  }
+
+  markAsAttended(id: string): Observable<boolean> {
+    return this.http.patch(`${baseUrl}/reservations/${id}/attended`, {}).pipe(
+      map(() => {
+        return true;
+      }),
+      catchError(() => of(false))
+    );
+  }
+
+  markAsAttendedOut(id: string): Observable<boolean> {
+    return this.http.patch(`${baseUrl}/reservations/${id}/attended-out`, {}).pipe(
+      map(() => true),
+      catchError(() => of(false))
+    );
   }
 }
