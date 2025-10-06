@@ -111,8 +111,7 @@ export class AuthService {
     return true;
   }
 
-  handleAuthError(err: any): Observable<never> {
-    console.log(err);
+  handleAuthError(err: any): Observable<boolean> {
     this.logout();
     return throwError(() => err);
   }

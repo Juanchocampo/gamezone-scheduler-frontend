@@ -7,6 +7,8 @@ import { FullCalendarComponent, FullCalendarModule } from '@fullcalendar/angular
 import { CalendarOptions } from '@fullcalendar/core';
 import timeGridPlugin from '@fullcalendar/timegrid';
 import interactionPlugin from '@fullcalendar/interaction';
+import Swal from 'sweetalert2';
+import { HttpErrorResponse } from '@angular/common/http';
 
 @Component({
   selector: 'reservation-page',
@@ -16,9 +18,10 @@ import interactionPlugin from '@fullcalendar/interaction';
 export default class ReservationPageComponent {
   reservationService = inject(ReservationService);
   selectedConsole = signal<string | null>(null);
+  change = signal<boolean>(false)
   campus = toSignal(
     inject(ActivatedRoute).paramMap.pipe(
-      tap(() =>this.selectedConsole.set(null)),
+      tap(() => this.selectedConsole.set(null)),
       map((param) => param.get('campus'))
     )
   );
@@ -32,19 +35,34 @@ export default class ReservationPageComponent {
   });
 
   eventsResource = rxResource({
-    params: () => ({ campus: this.campus(), console: this.selectedConsole() }),
+    params: () => ({ campus: this.campus(), console: this.selectedConsole(), change: this.change() }),
     stream: ({ params }) => {
       return this.reservationService
         .getActiveEvents(params.console!, params.campus!)
-        .pipe(
-          catchError(err => of([]))
-        );
+        .pipe(catchError((err) => of([])));
     },
   });
 
   selectConsole(console: string) {
     this.selectedConsole.set(console);
   }
+  pad = (n: number) => n.toString().padStart(2, '0');
+
+  formatLocalDate = (date: Date) => {
+    return (
+      date.getFullYear() +
+      '-' +
+      this.pad(date.getMonth() + 1) +
+      '-' +
+      this.pad(date.getDate()) +
+      'T' +
+      this.pad(date.getHours()) +
+      ':' +
+      this.pad(date.getMinutes()) +
+      ':' +
+      this.pad(date.getSeconds())
+    );
+  };
 
   events = effect(() => {
     const events = this.eventsResource.value() ?? [];
@@ -57,7 +75,7 @@ export default class ReservationPageComponent {
   });
 
   calendarOptions: CalendarOptions = {
-    timeZone: 'UTC',
+    timeZone: 'local',
     initialView: 'timeGridWeek',
     locale: 'es',
     plugins: [timeGridPlugin, interactionPlugin],
@@ -70,22 +88,20 @@ export default class ReservationPageComponent {
     },
     selectAllow: (selectInfo) => {
       const now = new Date();
-      const start = selectInfo.start;
+      const end = selectInfo.end;
 
-      return start.getTime() > now.getTime();
+      return end.getTime() > now.getTime();
     },
     headerToolbar: {
       left: '',
       center: 'title',
       right: '',
     },
+    editable: false,
     footerToolbar: false,
     allDaySlot: false,
     slotDuration: '01:00:00',
     selectable: true,
-    selectOverlap: false,
-    selectMirror: true,
-    nowIndicator: true,
     hiddenDays: [0, 6],
     slotMinTime: '08:00:00',
     slotMaxTime: '18:00:00',
@@ -97,7 +113,55 @@ export default class ReservationPageComponent {
       const end = new Date(start);
       end.setHours(start.getHours() + 1);
 
-      console.log('Reserva seleccionada:', start, end);
+      Swal.fire({
+        title: 'Quieres guardar esta reserva?',
+        showCancelButton: true,
+        cancelButtonText: 'Cancelar',
+        confirmButtonText: 'Guardar',
+      }).then((result) => {
+        if (result.isConfirmed) {
+          this.reservationService
+            .createReservations(
+              this.selectedConsole()!,
+              this.campus()!,
+              this.formatLocalDate(start)
+            )
+            .subscribe({
+              next: (res) => {
+                console.log(res)
+                Swal.fire('Reserva guardada exitosamente!', '', 'success');
+                this.change.set(!this.change())
+              },
+              error: (err: HttpErrorResponse) => {
+                if (err.status === 409) {
+                  Swal.fire({
+                    title: 'Conflicto',
+                    text: 'Ya el usuario tiene una reserva activa',
+                    icon: 'warning',
+                    confirmButtonText: 'Aceptar',
+                  });
+                } else if (err.status === 403) {
+                  Swal.fire({
+                    title: 'Acceso restringido',
+                    text: 'Tu cuenta ha sido suspendida por incumplir las normas de uso. Si crees que es un error, contacta a algún administrador',
+                    icon: 'error',
+                    confirmButtonText: 'Aceptar',
+                  });
+                } else {
+                  Swal.fire({
+                    title: 'Error',
+                    text: 'Ocurrió un error inesperado',
+                    icon: 'error',
+                    confirmButtonText: 'Aceptar',
+                  });
+                }
+              },
+            });
+          Swal.fire('Reserva guardada exitosamente!', '', 'success');
+        } else if (result.isDenied) {
+          Swal.fire('Reserva no guardada', '', 'info');
+        }
+      });
     },
   };
 }

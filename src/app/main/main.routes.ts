@@ -23,6 +23,11 @@ export const mainRoutes: Routes = [
         title: 'Reservas'
       },
       {
+        path: 'reservas/d/:id',
+        loadComponent: () => import('./pages/reservation-details/reservation-details.component'),
+        title: 'Detalles de Reserva'
+      },
+      {
         path: 'monitor',
         loadComponent: () => import('./pages/monitor-page/monitor-page.component'),
         title: 'Panel de Monitor',

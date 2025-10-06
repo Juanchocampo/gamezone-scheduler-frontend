@@ -37,7 +37,10 @@ export const authInterceptor: HttpInterceptorFn = (req, next) => {
             });
             return next(newReq);
           }),
-          catchError((err) => authService.handleAuthError(err))
+          catchError((err) => {
+            authService.logout()
+            return throwError(() => err)
+          })
         );
       })
     );

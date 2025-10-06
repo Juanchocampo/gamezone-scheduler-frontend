@@ -1,0 +1,52 @@
+<div class="overflow-auto">
+  <table class="table">
+    <!-- head -->
+    <thead>
+      <tr>
+        <th>Nombre</th>
+        <th>Sede</th>
+        <th>Consola</th>
+        <th>Fecha</th>
+        <th>Hora</th>
+        <th>estado</th>
+        <th></th>
+      </tr>
+    </thead>
+    <tbody>
+      @if(isLoading()){
+      <td colspan="7" class="text-center text-xl">
+        <span class="loading loading-spinner loading-xl"></span>
+      </td>
+      }@else if(reservations().length === 0 && isLoading()){
+      <td colspan="7" class="font-bold text-center text-xl">No reservas activas.</td>
+      }@else { @for (reservation of reservations(); track reservation.qr_sig) {
+      <tr>
+        <td>
+          <div class="flex items-center gap-3">
+            <div class="avatar"></div>
+            <div>
+              <div class="font-bold">{{ reservation.user.name | titlecase }}</div>
+            </div>
+          </div>
+        </td>
+        <td>
+          {{ reservation.console.console_name | titlecase }}
+        </td>
+        <td>
+          {{ reservation.console.campus.campus_name | titlecase }}
+        </td>
+        <td>{{ reservation.starts_at | date : 'yyyy-MM-dd' }}</td>
+        <td>{{ reservation.starts_at | date : 'h:mm a' }}</td>
+        @if (reservation.status_id == 1) {
+        <td><span class="badge badge-soft badge-success">Pendiente</span></td>
+        }@else if (reservation.status_id == 3) {
+        <td><span class="badge badge-soft badge-info whitespace-nowrap">En uso</span></td>
+        }
+        <th>
+          <button class="btn btn-ghost btn-xs">Detalles</button>
+        </th>
+      </tr>
+      } }
+    </tbody>
+  </table>
+</div>
