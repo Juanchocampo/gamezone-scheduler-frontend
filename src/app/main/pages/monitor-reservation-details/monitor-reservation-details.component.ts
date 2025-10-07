@@ -3,13 +3,13 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { ReservationService } from '../../services/reservation.service';
 import { map } from 'rxjs';
 import { rxResource, toSignal } from '@angular/core/rxjs-interop';
-import { DatePipe, TitleCasePipe } from '@angular/common';
 import Swal from 'sweetalert2';
+import { ReservationCardComponent } from "../../components/reservation-card/reservation-card.component";
 
 @Component({
   selector: 'app-reservation-details',
-  imports: [DatePipe, TitleCasePipe],
-  templateUrl: './reservation-details.component.html',
+  imports: [ ReservationCardComponent],
+  templateUrl: './monitor-reservation-details.component.html',
 })
 export default class ReservationDetailsComponent {
   private router = inject(Router);
@@ -37,7 +37,7 @@ export default class ReservationDetailsComponent {
     });
   }
 
-  MarkAsAttendedOut(){
+  markAsAttendedOut(){
     this.reservationService.markAsAttendedOut(this.id()!).subscribe({
       next: (success) => {
         if (success) {

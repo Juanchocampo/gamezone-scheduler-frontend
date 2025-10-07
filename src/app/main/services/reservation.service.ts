@@ -35,6 +35,27 @@ export class ReservationService {
     );
   }
 
+  getAllReservations(
+    status: string,
+    document: string,
+    offset: number
+  ): Observable<Reservations[]> {
+    return this.http
+      .get<Reservations[]>(`${baseUrl}/reservations`, {
+        params: {
+          status_name: status,
+          document: document,
+          offset: offset,
+          limit: 5,
+        },
+      })
+      .pipe(
+        catchError((err) => {
+          return of([]);
+        })
+      );
+  }
+
   getActiveReservations(
     status: string,
     document: string,
@@ -57,7 +78,16 @@ export class ReservationService {
   }
 
   getActiveReservationsById(id: string): Observable<Reservations> {
-    return this.http.get<Reservations>(`${baseUrl}/reservations/${id}`);
+    return this.http.get<Reservations>(`${baseUrl}/reservations/active/${id}`);
+  }
+
+  getReservationsById(id: string): Observable<Reservations> {
+    return this.http.get<Reservations>(`${baseUrl}/reservations/${id}`).pipe(
+      catchError(err => {
+        console.log(err)
+        return of()
+      })
+    );
   }
 
   createReservations(
@@ -86,5 +116,13 @@ export class ReservationService {
       map(() => true),
       catchError(() => of(false))
     );
+  }
+
+  getReservationByQr(qr: string): Observable<Reservations>{
+    return this.http.get<Reservations>(`${baseUrl}/reservations/qr/${qr}`).pipe(
+      catchError((err) => {
+        return of()
+      })
+    )
   }
 }

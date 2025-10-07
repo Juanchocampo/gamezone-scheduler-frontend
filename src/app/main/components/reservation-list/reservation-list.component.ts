@@ -11,4 +11,5 @@ import { RouterLink } from '@angular/router';
 export class ReservationListComponent {
   reservations = input.required<Reservations[]>()
   isLoading = input.required<boolean>()
+  route = input.required<string>()
 }

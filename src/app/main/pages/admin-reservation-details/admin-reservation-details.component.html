@@ -1,8 +1,7 @@
 
 <reservation-card
-[isAdmin]="false"
 [isLoading]="reservationResource.isLoading()"
-[isMonitor]="false"
 [reservation]="reservationResource.value()!"
-routeBack="/home"
+[isAdmin]="true"
+routeBack="/admin"
 />

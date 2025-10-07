@@ -37,13 +37,25 @@
         </td>
         <td>{{ reservation.starts_at | date : 'yyyy-MM-dd' }}</td>
         <td>{{ reservation.starts_at | date : 'h:mm a' }}</td>
-        @if (reservation.status_id == 1) {
-        <td><span class="badge badge-soft badge-success">Pendiente</span></td>
-        }@else if (reservation.status_id == 3) {
-        <td><span class="badge badge-soft badge-info whitespace-nowrap">En uso</span></td>
+        @switch (reservation.status_id) {
+          @case (1) {
+            <td><span class="badge badge-soft badge-accent">Pendiente</span></td>
+          }
+          @case (2) {
+            <td><span class="badge badge-soft badge-success">Atendido</span></td>
+          }
+          @case (3) {
+            <td><span class="badge badge-soft badge-info whitespace-nowrap">En uso</span></td>
+          }
+          @case (4) {
+            <td><span class="badge badge-soft badge-error">Expirado</span></td>
+          }
+          @case (5) {
+            <td><span class="badge badge-soft badge-accent">Cancelado</span></td>
+          }
         }
         <th>
-          <button class="btn btn-ghost btn-xs" [routerLink]="['/reservas/d', reservation.id]">Detalles</button>
+          <button class="btn btn-ghost btn-xs" [routerLink]="[`${route()}`, reservation.id]">Detalles</button>
         </th>
       </tr>
       } }

@@ -1,0 +1,52 @@
+<div class="font-monserrat">
+  <div class="flex justify-start mt-2.5 font-monserrat">
+    <div class="dropdown">
+      <div tabindex="0" role="button" class="btn m-1">
+        {{status() || 'Todas las reservas'}}
+      </div>
+      <ul tabindex="0" class="dropdown-content menu bg-base-200 rounded-box z-[1] w-52 p-2 shadow">
+        <li><a (click)="status.set(null)">Todas las reservas</a></li>
+        <li><a (click)="status.set('Pendiente')">Pendientes</a></li>
+        <li><a (click)="status.set('Atendido')">Atendidos</a></li>
+        <li><a (click)="status.set('En uso')">En uso</a></li>
+        <li><a (click)="status.set('Expirado')">Expirado</a></li>
+        <li><a (click)="status.set('Cancelado')">Cancelado</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="flex justify-between items-center m-4">
+    <div>
+      <label class="input">
+        <svg class="h-[1em] opacity-50" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+          <g
+            stroke-linejoin="round"
+            stroke-linecap="round"
+            stroke-width="2.5"
+            fill="none"
+            stroke="currentColor"
+          >
+            <circle cx="11" cy="11" r="8"></circle>
+            <path d="m21 21-4.3-4.3"></path>
+          </g>
+        </svg>
+        <input type="number" placeholder="Documento" #search (keyup)="document.set(search.value)" />
+      </label>
+    </div>
+  </div>
+  <reservation-list
+    [reservations]="reservations()!"
+    [isLoading]="reservationsResource.isLoading()"
+    route="/admin/r"
+  />
+  @if (reservations()?.length! >= 1) { @if (limit() === reservationsResource.value()?.length! &&
+  !reservationsResource.isLoading()) {
+  <div class="flex justify-center w-full mt-2">
+    <button
+      class="w-1/2 cursor-pointer mt-3 py-2 rounded-xl bg-gray-800 text-white shadow-lg hover:bg-gray-700 transition"
+      (click)="loadMore()"
+    >
+      Ver más
+    </button>
+  </div>
+  } }
+</div>

@@ -1,4 +1,4 @@
-<div class="bg-primary-content font-monserrat">
+<div class=" font-monserrat">
   <div class="flex flex-wrap justify-between items-center m-4">
     <div class="flex filter">
       <input
@@ -24,7 +24,22 @@
       />
     </div>
     <div class="flex gap-2">
-      <button class="btn btn-primary btn-sm">Escanear QR</button>
+      <button class="btn btn-primary btn-sm" (click)="showModal()">Escanear QR</button>
+      @if (this.showScanner() === true) {
+      <dialog id="scanner" #scanner class="modal">
+        <div class="modal-box">
+          <h3 class="text-xl font-bold mb-3">Escanea el QR</h3>
+          <form method="dialog">
+            <button class="btn btn-sm btn-circle btn-ghost absolute right-2 top-2" (click)="this.showScanner.set(false)">✕</button>
+          </form>
+          <zxing-scanner
+            [device]="selectedDevice!"
+            (camerasFound)="onCamerasFound($event)"
+            (scanSuccess)="onCodeResult($event)"
+          ></zxing-scanner>
+        </div>
+      </dialog>
+      }
     </div>
   </div>
   <div class="flex justify-between items-center m-4">
@@ -49,18 +64,17 @@
   <reservation-list
     [reservations]="reservations()!"
     [isLoading]="reservationsResource.isLoading()"
+    route="/monitor/r"
   />
-  @if (reservations()?.length! >= 1) {
-
-    @if (limit() === reservationsResource.value()?.length! && !reservationsResource.isLoading()) {
-      <div class="flex justify-center w-full mt-2">
-        <button
-        class=" w-1/2 cursor-pointer mt-3 py-2 rounded-xl bg-gray-800 text-white shadow-lg hover:bg-gray-700 transition"
-        (click)="loadMore()"
-        >
-        Ver más
-      </button>
-    </div>
-  }
-}
+  @if (reservations()?.length! >= 1) { @if (limit() === reservationsResource.value()?.length! &&
+  !reservationsResource.isLoading()) {
+  <div class="flex justify-center w-full mt-2">
+    <button
+      class="w-1/2 cursor-pointer mt-3 py-2 rounded-xl bg-gray-800 text-white shadow-lg hover:bg-gray-700 transition"
+      (click)="loadMore()"
+    >
+      Ver más
+    </button>
+  </div>
+  } }
 </div>
