@@ -1,22 +1,26 @@
 const fs = require('fs');
 const path = require('path');
+require('dotenv').config();
 
-const targetPath = path.join(__dirname, './src/environments/environment.ts');
-const targetDevPath = path.join(__dirname, './src/environments/environment.development.ts');
+const envDir = path.join(__dirname, './src/environments');
+if (!fs.existsSync(envDir)) {
+  fs.mkdirSync(envDir, { recursive: true });
+}
 
-const envConfig = `
-export const environment = {
+const apiUrl = process.env.API_URL || 'http://localhost:8000';
+
+const targetProdPath = path.join(envDir, 'environment.ts');
+const targetDevPath = path.join(envDir, 'environment.development.ts');
+
+const prodConfig = `export const environment = {
   production: true,
-  apiUrl: '${process.env.API_URL}'
-};
-`;
+  API_URL: '${apiUrl}'
+};`;
 
-const envDevConfig = `
-export const environment = {
+const devConfig = `export const environment = {
   production: false,
-  apiUrl: '${process.env.API_URL}'
-};
-`;
+  API_URL: '${apiUrl}'
+};`;
 
-fs.writeFileSync(targetPath, envConfig);
-fs.writeFileSync(targetDevPath, envDevConfig);
+fs.writeFileSync(targetProdPath, prodConfig);
+fs.writeFileSync(targetDevPath, devConfig);
