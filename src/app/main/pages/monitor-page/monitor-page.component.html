@@ -1,0 +1,80 @@
+<div class=" font-monserrat" (keyup.esc)="showScanner.set(false)">
+  <div class="flex flex-wrap justify-between items-center m-4">
+    <div class="flex filter">
+      <input
+        class="btn filter-reset"
+        (click)="status.set(null)"
+        type="radio"
+        name="metaframeworks"
+        aria-label="All"
+      />
+      <input
+        class="btn"
+        type="radio"
+        (click)="status.set('Pendiente')"
+        name="metaframeworks"
+        aria-label="Pendientes"
+      />
+      <input
+        class="btn"
+        type="radio"
+        (click)="status.set('En uso')"
+        name="metaframeworks"
+        aria-label="En uso"
+      />
+    </div>
+    <div class="flex gap-2">
+      <button class="btn btn-primary btn-sm" (click)="showModal()">Escanear QR</button>
+      @if (showScanner() === true) {
+      <dialog id="scanner" #scanner class="modal">
+        <div class="modal-box">
+          <h3 class="text-xl font-bold mb-3">Escanea el QR</h3>
+          <form method="dialog">
+            <button class="btn btn-sm btn-circle btn-ghost absolute right-2 top-2" (click)="showScanner.set(false)">✕</button>
+          </form>
+          <zxing-scanner
+            [device]="selectedDevice!"
+            (camerasFound)="onCamerasFound($event)"
+            (scanSuccess)="onCodeResult($event)"
+          ></zxing-scanner>
+        </div>
+      </dialog>
+      }
+    </div>
+  </div>
+  <div class="flex justify-between items-center m-4">
+    <div>
+      <label class="input">
+        <svg class="h-[1em] opacity-50" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+          <g
+            stroke-linejoin="round"
+            stroke-linecap="round"
+            stroke-width="2.5"
+            fill="none"
+            stroke="currentColor"
+          >
+            <circle cx="11" cy="11" r="8"></circle>
+            <path d="m21 21-4.3-4.3"></path>
+          </g>
+        </svg>
+        <input type="number" placeholder="Documento" #search (keyup)="document.set(search.value)" />
+      </label>
+    </div>
+  </div>
+  <reservation-list
+    [reservations]="reservations()!"
+    [isLoading]="reservationsResource.isLoading()"
+    route="/monitor/r"
+  />
+  @if (reservations()?.length! >= 1) { @if (limit() === reservationsResource.value()?.length! &&
+  !reservationsResource.isLoading()) {
+  <div class="flex justify-center w-full mt-2">
+    <button
+      class="w-1/2 cursor-pointer mt-3 py-2 rounded-xl bg-gray-800 text-white shadow-lg hover:bg-gray-700 transition"
+      (click)="loadMore()"
+    >
+      Ver más
+    </button>
+  </div>
+  } }
+</div>

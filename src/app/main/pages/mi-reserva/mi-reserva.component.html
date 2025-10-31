@@ -1,0 +1,10 @@
+
+<reservation-card
+[isAdmin]="false"
+[isLoading]="reservationResource.isLoading()"
+[isMonitor]="false"
+[isMyReservation]="true"
+(markCancelled)="markAsCancelled()"
+[reservation]="reservationResource.value()!"
+routeBack="/home"
+/>

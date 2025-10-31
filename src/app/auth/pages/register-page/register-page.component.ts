@@ -44,7 +44,7 @@ export default class RegisterPageComponent {
         [
           Validators.required,
           Validators.email,
-          Validators.pattern('^[a-zA-Z]{5,}@unibarranquilla.edu.co$'),
+          Validators.pattern('^[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,4}$')
         ],
       ],
       fullName: ['', [Validators.required, Validators.minLength(10)]],
@@ -59,7 +59,7 @@ export default class RegisterPageComponent {
   );
 
   noNegative(event: KeyboardEvent) {
-    if (event.key === 'e' || event.key === '-' || event.key === 'E') {
+    if (event.key === 'e' || event.key === '-' || event.key === 'E' || event.key === 'arrowUp' || event.key === 'arrowDown') {
       event.preventDefault();
     }
   }

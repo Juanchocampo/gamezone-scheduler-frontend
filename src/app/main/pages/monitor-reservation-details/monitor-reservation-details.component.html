@@ -1,0 +1,9 @@
+
+<reservation-card
+[isLoading]="reservationResource.isLoading()"
+[reservation]="reservationResource.value()!"
+[isMonitor]="true"
+routeBack="/monitor"
+(markAttended)="markAsAttended()"
+(markAttendedOut)="markAsAttendedOut()"
+/>

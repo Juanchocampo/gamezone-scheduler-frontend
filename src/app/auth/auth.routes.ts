@@ -2,7 +2,7 @@ import { Routes } from '@angular/router';
 import { AuthLayoutComponent } from './layout/auth-layout/auth-layout.component';
 import { authGuard } from './guards/auth.guard';
 
-export const routes: Routes = [
+export const authRoutes: Routes = [
   {
     path: '',
     component: AuthLayoutComponent,
@@ -30,4 +30,4 @@ export const routes: Routes = [
   }
 ]
 
-export default routes
+export default authRoutes
