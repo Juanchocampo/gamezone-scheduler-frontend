@@ -1,11 +1,12 @@
 # See https://docs.github.com/get-started/getting-started-with-git/ignoring-files for more about ignoring files.
 
 # Compiled output
+.env
 /dist
 /tmp
 /out-tsc
-/bazel-out
-/environments/
+/bazel-output
+src/environments/
 
 # Node
 /node_modules
@@ -42,7 +43,3 @@ __screenshots__/
 # System files
 .DS_Store
 Thumbs.db
-
-# Angular environments (no subir configuraciones reales)
-src/environments/environment.ts
-src/environments/environment.development.ts
