@@ -1,9 +1,8 @@
-import { Component, inject } from '@angular/core';
-import { QRCodeComponent } from 'angularx-qrcode'
+import { Component, inject, signal } from '@angular/core';
 import { ReservationService } from '../../services/reservation.service';
 import { rxResource } from '@angular/core/rxjs-interop';
-import { DatePipe, TitleCasePipe } from '@angular/common';
-import { ReservationCardComponent } from "../../components/reservation-card/reservation-card.component";
+import { ReservationCardComponent } from "../../../shared/reservation-card/reservation-card.component";
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-mi-reserva',
@@ -12,10 +11,16 @@ import { ReservationCardComponent } from "../../components/reservation-card/rese
 })
 export default class MiReservaComponent {
   private reservationService = inject(ReservationService)
+  private router = inject(Router)
 
   reservationResource = rxResource({
-    stream: () => {
+    stream: ({params}) => {
       return this.reservationService.getMyReservation()
     }
   })
+
+  markAsCancelled(){
+    this.reservationService.cancelReservation(this.reservationResource.value()?.id!).subscribe()
+    this.router.navigateByUrl('/home')
+  }
 }

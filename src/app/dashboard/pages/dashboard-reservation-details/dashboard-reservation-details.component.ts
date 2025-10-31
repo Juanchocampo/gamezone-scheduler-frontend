@@ -1,16 +1,16 @@
 import { Component, inject } from '@angular/core';
-import { ReservationCardComponent } from '../../components/reservation-card/reservation-card.component';
-import { ReservationService } from '../../services/reservation.service';
 import { rxResource, toSignal } from '@angular/core/rxjs-interop';
 import { map } from 'rxjs';
+import { ReservationService } from '../../../main/services/reservation.service';
 import { ActivatedRoute } from '@angular/router';
+import { ReservationCardComponent } from "../../../shared/reservation-card/reservation-card.component";
 
 @Component({
-  selector: 'admin-reservation-details',
+  selector: 'dashboard-reservation-details',
   imports: [ReservationCardComponent],
-  templateUrl: './admin-reservation-details.component.html',
+  templateUrl: './dashboard-reservation-details.component.html',
 })
-export default class AdminReservationDetailsComponent {
+export default class DashboardReservationDetailsComponent {
   private reservationService = inject(ReservationService);
   private id = toSignal(inject(ActivatedRoute).paramMap.pipe(map((res) => res.get('id'))));
 

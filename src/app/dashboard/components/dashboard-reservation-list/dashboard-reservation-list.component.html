@@ -1,20 +1,20 @@
 <div class="font-monserrat">
-  <div class="flex justify-start mt-2.5 font-monserrat">
-    <div class="dropdown">
-      <div tabindex="0" role="button" class="btn m-1">
-        {{status() || 'Todas las reservas'}}
-      </div>
-      <ul tabindex="0" class="dropdown-content menu bg-base-200 rounded-box z-[1] w-52 p-2 shadow">
-        <li><a (click)="status.set(null)">Todas las reservas</a></li>
-        <li><a (click)="status.set('Pendiente')">Pendientes</a></li>
-        <li><a (click)="status.set('Atendido')">Atendidos</a></li>
-        <li><a (click)="status.set('En uso')">En uso</a></li>
-        <li><a (click)="status.set('Expirado')">Expirado</a></li>
-        <li><a (click)="status.set('Cancelado')">Cancelado</a></li>
-      </ul>
-    </div>
-  </div>
   <div class="flex justify-between items-center m-4">
+    <div class="flex justify-center font-monserrat">
+      <div class="dropdown">
+        <div tabindex="0" role="button" class="btn m-1">
+          {{status() || 'Todas'}}
+        </div>
+        <ul tabindex="0" class="dropdown-content menu bg-base-200 rounded-box z-[1] w-52 p-2 shadow">
+          <li><a (click)="status.set(null)">Todas</a></li>
+          <li><a (click)="status.set('Pendiente')">Pendientes</a></li>
+          <li><a (click)="status.set('Atendido')">Atendidos</a></li>
+          <li><a (click)="status.set('En uso')">En uso</a></li>
+          <li><a (click)="status.set('Expirado')">Expirado</a></li>
+          <li><a (click)="status.set('Cancelado')">Cancelado</a></li>
+        </ul>
+      </div>
+    </div>
     <div>
       <label class="input">
         <svg class="h-[1em] opacity-50" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
@@ -36,7 +36,7 @@
   <reservation-list
     [reservations]="reservations()!"
     [isLoading]="reservationsResource.isLoading()"
-    route="/admin/r"
+    route="/dashboard/reservations"
   />
   @if (reservations()?.length! >= 1) { @if (limit() === reservationsResource.value()?.length! &&
   !reservationsResource.isLoading()) {

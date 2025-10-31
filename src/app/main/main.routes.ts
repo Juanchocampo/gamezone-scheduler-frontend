@@ -2,6 +2,7 @@ import { Routes } from '@angular/router';
 import { MainLayoutComponent } from './layouts/main-layout/main-layout.component';
 import { monitorGuard } from './guards/monitor.guard';
 import { adminGuard } from './guards/admin.guard';
+import HomePageComponent from './pages/home-page/home-page.component';
 
 export const mainRoutes: Routes = [
   {
@@ -10,7 +11,7 @@ export const mainRoutes: Routes = [
     children: [
       {
         path: 'home',
-        loadComponent: () => import('./pages/home-page/home-page.component'),
+        component: HomePageComponent,
         title: 'Home'
       },
       {
@@ -39,18 +40,6 @@ export const mainRoutes: Routes = [
         loadComponent: () => import('./pages/monitor-reservation-details/monitor-reservation-details.component'),
         title: 'Detalles de Reserva',
         canMatch: [monitorGuard]
-      },
-      {
-        path: 'admin',
-        loadComponent: () => import('./pages/admin-page/admin-page.component'),
-        title: 'Panel de administrador',
-        canMatch: [adminGuard] 
-      },
-      {
-        path: 'admin/r/:id',
-        loadComponent: () => import('./pages/admin-reservation-details/admin-reservation-details.component'),
-        title: 'Detalles de Reserva',
-        canMatch: [adminGuard]
       },
       {
         path: '**',

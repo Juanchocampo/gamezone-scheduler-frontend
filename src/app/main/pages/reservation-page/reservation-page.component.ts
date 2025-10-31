@@ -128,7 +128,6 @@ export default class ReservationPageComponent {
             )
             .subscribe({
               next: (res) => {
-                console.log(res)
                 Swal.fire('Reserva guardada exitosamente!', '', 'success');
                 this.change.set(!this.change())
               },
@@ -157,7 +156,6 @@ export default class ReservationPageComponent {
                 }
               },
             });
-          Swal.fire('Reserva guardada exitosamente!', '', 'success');
         } else if (result.isDenied) {
           Swal.fire('Reserva no guardada', '', 'info');
         }

@@ -4,7 +4,7 @@ import { ReservationService } from '../../services/reservation.service';
 import { map } from 'rxjs';
 import { rxResource, toSignal } from '@angular/core/rxjs-interop';
 import Swal from 'sweetalert2';
-import { ReservationCardComponent } from "../../components/reservation-card/reservation-card.component";
+import { ReservationCardComponent } from "../../../shared/reservation-card/reservation-card.component";
 
 @Component({
   selector: 'app-reservation-details',

@@ -1,5 +1,5 @@
 import { Component, input } from '@angular/core';
-import { Reservations } from '../../interfaces/reservation.interface';
+import { Reservations } from '../../main/interfaces/reservation.interface';
 import { DatePipe, TitleCasePipe } from '@angular/common';
 import { RouterLink } from '@angular/router';
 

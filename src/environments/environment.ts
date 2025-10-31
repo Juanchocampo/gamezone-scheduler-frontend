@@ -1,3 +1,3 @@
 export const environment = {
-  API_URL: 'http://localhost:8000'
+  API_URL: 'https://gamezone-scheduler-backend.onrender.com'
 }

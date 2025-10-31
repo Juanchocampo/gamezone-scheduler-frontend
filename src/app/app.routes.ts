@@ -6,11 +6,11 @@ export const routes: Routes = [
     loadChildren: () => import('./auth/auth.routes')
   },
   {
-    path: '',
-    loadChildren: () => import('./main/main.routes')
-  },
-  {
     path: 'dashboard',
     loadChildren: () => import('./dashboard/dashboard.routes')
-  }
+  },
+  {
+    path: '',
+    loadChildren: () => import('./main/main.routes'),
+  },
 ];

@@ -2,7 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
 import { environment } from '../../../environments/environment.development';
 import { Console } from '../interfaces/console.interface';
-import { catchError, debounceTime, map, Observable, of, tap, throwError } from 'rxjs';
+import { catchError, map, Observable, of } from 'rxjs';
 import { ConsoleMapper } from '../mappers/consoles.mapper';
 import { EventInput } from '@fullcalendar/core/index.js';
 import { Reservations } from '../interfaces/reservation.interface';
@@ -112,7 +112,7 @@ export class ReservationService {
   }
 
   markAsAttendedOut(id: string): Observable<boolean> {
-    return this.http.patch(`${baseUrl}/reservations/${id}/attended-out`, {}).pipe(
+    return this.http.patch(`${baseUrl}/reservations/${id}/attended`, {}).pipe(
       map(() => true),
       catchError(() => of(false))
     );
@@ -125,4 +125,11 @@ export class ReservationService {
       })
     )
   }
+
+  cancelReservation(id: string): Observable<boolean>{
+    return this.http.delete<boolean>(`${baseUrl}/reservations/${id}`).pipe(
+      catchError(() => of(false))
+    )
+  }
+
 }

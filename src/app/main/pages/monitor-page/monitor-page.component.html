@@ -1,4 +1,4 @@
-<div class=" font-monserrat">
+<div class=" font-monserrat" (keyup.esc)="showScanner.set(false)">
   <div class="flex flex-wrap justify-between items-center m-4">
     <div class="flex filter">
       <input
@@ -25,12 +25,12 @@
     </div>
     <div class="flex gap-2">
       <button class="btn btn-primary btn-sm" (click)="showModal()">Escanear QR</button>
-      @if (this.showScanner() === true) {
+      @if (showScanner() === true) {
       <dialog id="scanner" #scanner class="modal">
         <div class="modal-box">
           <h3 class="text-xl font-bold mb-3">Escanea el QR</h3>
           <form method="dialog">
-            <button class="btn btn-sm btn-circle btn-ghost absolute right-2 top-2" (click)="this.showScanner.set(false)">✕</button>
+            <button class="btn btn-sm btn-circle btn-ghost absolute right-2 top-2" (click)="showScanner.set(false)">✕</button>
           </form>
           <zxing-scanner
             [device]="selectedDevice!"

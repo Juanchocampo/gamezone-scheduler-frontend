@@ -2,7 +2,7 @@ import { Component, computed, effect, ElementRef, inject, signal, viewChild } fr
 import { rxResource, toObservable, toSignal } from '@angular/core/rxjs-interop';
 import { ReservationService } from '../../services/reservation.service';
 import { debounceTime, distinctUntilChanged, filter, tap } from 'rxjs';
-import { ReservationListComponent } from '../../components/reservation-list/reservation-list.component';
+import { ReservationListComponent } from '../../../shared/reservation-list/reservation-list.component';
 import { Reservations } from '../../interfaces/reservation.interface';
 import { ZXingScannerModule } from '@zxing/ngx-scanner';
 import { Router } from '@angular/router';

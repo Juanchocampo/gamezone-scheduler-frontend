@@ -1,10 +1,10 @@
 import { Component, effect, inject, signal } from '@angular/core';
-import { ReservationListComponent } from '../../components/reservation-list/reservation-list.component';
 import { rxResource, toObservable, toSignal } from '@angular/core/rxjs-interop';
 import { debounceTime, distinctUntilChanged, filter, tap } from 'rxjs';
-import { ReservationService } from '../../services/reservation.service';
 import { Router } from '@angular/router';
-import { Reservations } from '../../interfaces/reservation.interface';
+import { ReservationListComponent } from '../../../shared/reservation-list/reservation-list.component';
+import { ReservationService } from '../../../main/services/reservation.service';
+import { Reservations } from '../../../main/interfaces/reservation.interface';
 
 const ReservationStatus: Record<string, number> = {
   Pendiente: 1,
@@ -15,11 +15,11 @@ const ReservationStatus: Record<string, number> = {
 };
 
 @Component({
-  selector: 'app-admin-page',
+  selector: 'dashboard-reservation-list',
   imports: [ReservationListComponent],
-  templateUrl: './admin-page.component.html',
+  templateUrl: './dashboard-reservation-list.component.html',
 })
-export default class AdminPageComponent {
+export default class dashboardReservations {
   private reservationService = inject(ReservationService);
   private router = inject(Router);
   status = signal<string | null>(null);

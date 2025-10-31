@@ -14,10 +14,15 @@ export class NavbarComponent {
   authService = inject(AuthService);
   private details = viewChild<ElementRef<HTMLDetailsElement>>('details');
 
+  authResource = rxResource({
+    stream: () => {
+      return this.authService.checkStatus()
+    }
+  })
+
   currentMode = signal<'corporate' | 'sunset'>('corporate');
 
   constructor() {
-    // Al iniciar, leer localStorage
     const saved = localStorage.getItem('theme') as 'corporate' | 'sunset' | null;
     if (saved) {
       this.currentMode.set(saved);
@@ -26,7 +31,11 @@ export class NavbarComponent {
       this.applyTheme(this.currentMode());
     }
   }
-
+  
+  private applyTheme(theme: 'corporate' | 'sunset') {
+    document.documentElement.setAttribute('data-theme', theme);
+  }
+  
   toggleMode() {
     const newMode = this.currentMode() === 'corporate' ? 'sunset' : 'corporate';
     this.currentMode.set(newMode);
@@ -34,15 +43,6 @@ export class NavbarComponent {
     this.applyTheme(newMode);
   }
 
-  private applyTheme(theme: 'corporate' | 'sunset') {
-    document.documentElement.setAttribute('data-theme', theme);
-  }
-
-  authResource = rxResource({
-    stream: () => {
-      return this.authService.checkStatus()
-    }
-  })
 
   closeDetails() {
     const details = this.details()?.nativeElement;
