@@ -19,7 +19,7 @@ const prodConfig = `export const environment = {
 
 const devConfig = `export const environment = {
   production: false,
-  API_URL: 'http://localhost:8000'
+  API_URL: '${apiUrl}'
 };`;
 
 fs.writeFileSync(targetProdPath, prodConfig);
